@@ -20,11 +20,12 @@ local BUTTON_SPACING = 10
 local mainFrame = Instance.new("Frame")
 mainFrame.Name = "MainFrame"
 mainFrame.Size = GUI_SIZE
-mainFrame.Position = UDim2.new(0.5, -150, 0.5, -100) -- Center screen
+mainFrame.Position = UDim2.new(0.15, -150, 0.5, -100) -- Center screen
 mainFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
 mainFrame.BorderSizePixel = 2
 mainFrame.BorderColor3 = Color3.fromRGB(100, 100, 100)
 mainFrame.Parent = screenGui
+mainFrame.Visible = false -- Defaultnya disembunyikan
 
 -- Membuat UICorner untuk round corners
 local corner = Instance.new("UICorner")
@@ -55,6 +56,41 @@ local function createButton(name, displayName, part, yPosition)
 	button.TextSize = 14
 	button.Font = Enum.Font.Gotham
 	button.Parent = mainFrame
+	
+	-- FUNGSI penambahan Trigger Button untuk memunculkan dan menyembunyikan GUI
+	local triggerButton = Instance.new("TextButton")
+	triggerButton.Name = "TriggerButton"
+	triggerButton.Size = UDim2.new(0, 120, 0, 50)
+	triggerButton.Position = UDim2.new(0, 20, 0, 20) -- Top-left corner
+	triggerButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+	triggerButton.Text = "📋 Teleport Menu"
+	triggerButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	triggerButton.TextSize = 14
+	triggerButton.Font = Enum.Font.GothamBold
+	triggerButton.Parent = screenGui -- ← PENTING: Parent ke screenGui, bukan mainFrame!
+	triggerButton.Visible = true
+
+	-- Tambah UICorner untuk tampilan yang bagus
+	local triggerCorner = Instance.new("UICorner")
+	triggerCorner.CornerRadius = UDim.new(0, 8)
+	triggerCorner.Parent = triggerButton
+
+	-- Hover effect
+	triggerButton.MouseEnter:Connect(function()
+		triggerButton.BackgroundColor3 = Color3.fromRGB(0, 180, 255)
+	end)
+
+	triggerButton.MouseLeave:Connect(function()
+		triggerButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+	end)
+
+	-- Fungsi untuk toggle GUI
+	triggerButton.MouseButton1Click:Connect(function()
+		mainFrame.Visible = not mainFrame.Visible
+		print("✅ GUI Toggled: " .. tostring(mainFrame.Visible))
+	end)
+	
+
 
 	-- Tambah UICorner ke tombol
 	local buttonCorner = Instance.new("UICorner")
